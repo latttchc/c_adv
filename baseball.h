@@ -1,0 +1,10 @@
+#define TEAMNUM 6     /* ???? */
+#define MAX_LENGTH 10 /* ???????? */
+
+typedef struct baseball
+{                              /* ????????? */
+    char name[MAX_LENGTH + 1]; /* ???? */
+    int wins;                  /* ??? */
+    int losses;                /* ??? */
+    double average;            /* ?? */
+} Baseball;
