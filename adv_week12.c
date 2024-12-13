@@ -1,4 +1,4 @@
-#pragma warning(disable:4996) 
+#pragma warning(disable : 4996)
 
 #include <stdio.h>
 #include <time.h>
@@ -6,31 +6,32 @@
 #include <string.h>
 
 ////////////////////////////////////////////
-#define TEAMNUM 6		/* ƒ`[ƒ€” */
-#define MAX_LENGTH 10	/* ƒ`[ƒ€–¼‚Ì’·‚³‚ÌãŒÀ */
-//Ÿ”sî•ñ@‚Ì\‘¢‘Ì‚ÌéŒ¾
-typedef struct record {			/* Ÿ”sî•ñ */
-	char   name[MAX_LENGTH + 1];/* ƒ`[ƒ€–¼ */
-	int    wins;				/* Ÿ‚¿” */
-	int    losses;				/* •‰‚¯” */
-	double average;				/* Ÿ—¦ */
+#define TEAMNUM 6	  /* ãƒãƒ¼ãƒ æ•° */
+#define MAX_LENGTH 10 /* ãƒãƒ¼ãƒ åã®é•·ã•ã®ä¸Šé™ */
+// å‹æ•—æƒ…å ±ã€€ã®æ§‹é€ ä½“ã®å®£è¨€
+typedef struct record
+{							   /* å‹æ•—æƒ…å ± */
+	char name[MAX_LENGTH + 1]; /* ãƒãƒ¼ãƒ å */
+	int wins;				   /* å‹ã¡æ•° */
+	int losses;				   /* è² ã‘æ•° */
+	double average;			   /* å‹ç‡ */
 } RECORD;
 
-//\‘¢‘Ì”z—ñA\‘¢‘Ì¶¬
+// æ§‹é€ ä½“é…åˆ—ã€æ§‹é€ ä½“ç”Ÿæˆ
 RECORD team[TEAMNUM];
 void insertTeams();
 void printTeams();
 
 ////////////////////////////////////////////
-//ƒtƒ@ƒCƒ‹‚É‘‚«‚İ
+// ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã¿
 void makeTextFile(char fn[]);
 void makeStructFile(char fn[]);
 
 /////////////////////////////////////////
-//ƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚İ
-int readfile_fgetc(char* fn);
-int readfile_fread(char* fn);
-int readfile_fread_all(char* fn);
+// ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã¿
+int readfile_fgetc(char *fn);
+int readfile_fread(char *fn);
+int readfile_fread_all(char *fn);
 
 ////////////////////////////////////////////
 
@@ -39,46 +40,85 @@ int readfile_fread_all(char* fn);
 ////////////////////////////////////////////
 int main()
 {
-	//puts("\n------whereMyFile();--------");
-	//whereMyFile();
+	// puts("\n------whereMyFile();--------");
+	// whereMyFile();
 
 	////////////////////////////////////////////
-	puts("\n---------------@—ûK@--------------");
+	puts("\n---------------ã€€ç·´ç¿’ã€€--------------");
 
+	FILE *fpt;
+	fpt = fopen("kadai12.txt", "r");
+	if (fpt == NULL)
+	{
+		puts("fopenå¤±æ•—");
+		return -1;
+	}
+	else
+	{
+		puts("fopenæˆåŠŸ");
+	}
 
+	char q[201];
+	char s[3][101];
+	char *rstr;
+	rstr = fgets(q, 200, fpt);
+	if (rstr == NULL)
+	{
+		puts("fgetså¤±æ•—");
+	}
+	else
+	{
+		printf("å•é¡Œ:%s", q);
+	}
 
+	for (int count = 0; count < 3; count++)
+	{
+		rstr = fgets(s[count], 100, fpt);
+		if (rstr == NULL)
+		{
+			puts("fgetså¤±æ•—");
+		}
+	}
+	printf("%s%s%s", s[0], s[1], s[2]);
+	int ansNo, score;
+	int iRet;
+	iRet = fscanf(fpt, "%d, %d", &ansNo, &score);
+	printf("æˆ»ã‚Šå€¤iRat:%d\n", iRet);
+	printf("æ­£è§£ã®ç•ªå·:%d\n", ansNo);
+	printf("é…ç‚¹:%d\n", score);
 
+	fclose(fpt);
 
-
-	puts("\n\n---------- ‘O€”õFƒtƒ@ƒCƒ‹‚ğì‚Á‚Ä’u‚­ ---------- ");
+	puts("\n\n---------- å‰æº–å‚™ï¼šãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œã£ã¦ç½®ã ---------- ");
 	insertTeams(team);
-	//printTeams();
-	puts("•¶š—ñ‚Æteam‚ğƒeƒLƒXƒgƒtƒ@ƒCƒ‹teamText.txt‚É•Û‘¶ ");
+	// printTeams();
+	puts("æ–‡å­—åˆ—ã¨teamã‚’ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«teamText.txtã«ä¿å­˜ ");
 	makeTextFile("teamText.txt");
 
-	puts("team‚ğƒoƒCƒiƒŠ[ƒtƒ@ƒCƒ‹teamStructFile.data‚É•Û‘¶ ");
+	puts("teamã‚’ãƒã‚¤ãƒŠãƒªãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«teamStructFile.dataã«ä¿å­˜ ");
 	makeStructFile("teamStructFile.data");
 
+	puts("\n\n--------------- ã‚µãƒ³ãƒ—ãƒ« --------------- ");
+	puts("-----fgetsã§1è¡Œãšã¤èª­ã¿è¾¼ã¿----- ");
 
-	puts("\n\n--------------- ƒTƒ“ƒvƒ‹ --------------- ");
-	puts("-----fgets‚Å‚Ps‚¸‚Â“Ç‚İ‚İ----- ");
-
-	FILE* fp;
+	FILE *fp;
 	char fn[101];
 	strcpy(fn, "teamText.txt");
 
-	/* ƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“ */
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ¼ãƒ—ãƒ³ */
 	fp = fopen(fn, "r");
 
-	if (fp == NULL) {
-		printf("ƒtƒ@ƒCƒ‹ŠJ‚­ƒGƒ‰[: %s \n", fn);
+	if (fp == NULL)
+	{
+		printf("ãƒ•ã‚¡ã‚¤ãƒ«é–‹ãã‚¨ãƒ©ãƒ¼: %s \n", fn);
 		return -1;
 	}
 
 	char str[512];
 	char *ret;
-	/* ‚Ps•ª‚Ì•¶š—ñ‚ğ“Ç‚İ‚İ */
-	while ((ret = fgets(str, 512-1, fp)) != NULL) {
+	/* ï¼‘è¡Œåˆ†ã®æ–‡å­—åˆ—ã‚’èª­ã¿è¾¼ã¿ */
+	while ((ret = fgets(str, 512 - 1, fp)) != NULL)
+	{
 		printf("[%s]\n", str);
 	}
 	puts("\n");
@@ -86,86 +126,90 @@ int main()
 	fclose(fp);
 	///////////////////////////////////////////////
 
+	///////////////////////////////////////////////
+	// puts("\n-----ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«----- ");
+	// puts("-----é–¢æ•°ï¼šreadfile_fgetc----- ");
+	// puts("-----fgetcã§ï¼‘è¡Œãšã¤èª­ã¿è¾¼ã¿----- ");
+	// readfile_fgetc("teamText.txt");
 
 	///////////////////////////////////////////////
-	//puts("\n-----ƒeƒLƒXƒgƒtƒ@ƒCƒ‹----- ");
-	//puts("-----ŠÖ”Freadfile_fgetc----- ");
-	//puts("-----fgetc‚Å‚Ps‚¸‚Â“Ç‚İ‚İ----- ");
-	//readfile_fgetc("teamText.txt");
+	// puts("\n-----ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«----- ");
+	// puts("-----Teamsã®æƒ…å ±ã‚’ä¸€éã§èª­ã¿è¾¼ã¿----- ");
+	// puts("-----é–¢æ•°ï¼šreadfile_fread_all----- ");
+	// readfile_fread("teamStructFile.data");
 
-
-	///////////////////////////////////////////////
-	//puts("\n-----ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹----- ");
-	//puts("-----Teams‚Ìî•ñ‚ğˆê•Õ‚Å“Ç‚İ‚İ----- ");
-	//puts("-----ŠÖ”Freadfile_fread_all----- ");
-	//readfile_fread("teamStructFile.data");
-	
-	//readfile_fread_all("teamStructFile.data");
+	// readfile_fread_all("teamStructFile.data");
 
 	printf("\n");
 	return 0;
-}//////// main‚ÌI‚è
+} //////// mainã®çµ‚ã‚Š
 
-
-//ƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚ğì¬/////////////////////////////////////////
-void makeTextFile(char fn[]) {
+// ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆ/////////////////////////////////////////
+void makeTextFile(char fn[])
+{
 	int a = 100;
 
-	FILE* fp;
-	fp = fopen(fn, "w");	//ƒtƒ@ƒCƒ‹‚ğ‘‚«‚İƒ‚[ƒhi"w"j‚ÅŠJ‚­
-	fprintf(fp, "a‚Í %d ‚Å‚·B\n", a);	//ua‚Í100‚Å‚·v‚Æ‘‚«‚Ş
+	FILE *fp;
+	fp = fopen(fn, "w");			   // ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãè¾¼ã¿ãƒ¢ãƒ¼ãƒ‰ï¼ˆ"w"ï¼‰ã§é–‹ã
+	fprintf(fp, "aã¯ %d ã§ã™ã€‚\n", a); // ã€Œaã¯100ã§ã™ã€ã¨æ›¸ãè¾¼ã‚€
 
-	for (int i = 0; i < TEAMNUM; i++) {
+	for (int i = 0; i < TEAMNUM; i++)
+	{
 		fprintf(fp,
-			"%s,%d,%d,%f\n",
-			team[i].name,
-			team[i].wins,
-			team[i].losses,
-			team[i].average
-		);
+				"%s,%d,%d,%f\n",
+				team[i].name,
+				team[i].wins,
+				team[i].losses,
+				team[i].average);
 	}
-	
 
-	fclose(fp);		//ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	fclose(fp); // ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 }
 
-//ƒoƒCƒiƒŠ[ƒtƒ@ƒCƒ‹‚ğì¬//////////////////////////////////////////
-void makeStructFile(char fn[]) {
-	FILE* fp;
+// ãƒã‚¤ãƒŠãƒªãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆ//////////////////////////////////////////
+void makeStructFile(char fn[])
+{
+	FILE *fp;
 
 	fp = fopen(fn, "wb");
 
-	for (int i = 0; i < TEAMNUM; i++) {
+	for (int i = 0; i < TEAMNUM; i++)
+	{
 		fwrite(&team[i], sizeof(RECORD), 1, fp);
 	}
 	fclose(fp);
 }
 
 /////////////////////////////////////////
-int readfile_fgetc(char* fn) {
-	FILE* fp;
+int readfile_fgetc(char *fn)
+{
+	FILE *fp;
 
-	/* ƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“ */
-	if ((fp = fopen(fn, "r")) == NULL) {
-		printf("ƒtƒ@ƒCƒ‹ŠJ‚­ƒGƒ‰[: %s \n", fn);
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ¼ãƒ—ãƒ³ */
+	if ((fp = fopen(fn, "r")) == NULL)
+	{
+		printf("ãƒ•ã‚¡ã‚¤ãƒ«é–‹ãã‚¨ãƒ©ãƒ¼: %s \n", fn);
 		return -1;
 	}
 
 	char ret;
-	while (1) {
-		/* ‚P•¶š“Ç‚İ‚İ */
+	while (1)
+	{
+		/* ï¼‘æ–‡å­—èª­ã¿è¾¼ã¿ */
 		ret = fgetc(fp);
 
-		if (ret == EOF) {
-			/* –ß‚è’l‚ªEOF‚Ìê‡“Ç‚İ‚İI—¹ */
+		if (ret == EOF)
+		{
+			/* æˆ»ã‚Šå€¤ãŒEOFã®å ´åˆèª­ã¿è¾¼ã¿çµ‚äº† */
 			break;
 		}
 		printf("%c ", ret);
 	}
 
-	//ˆÈ‰º‚Ì‚æ‚¤‚É‘‚¢‚Ä‚àOK
-	// ‚P•¶š‚¸‚Â“Ç‚İ‚ñ‚Å•\¦‚·‚é
-	while ((ret = fgetc(fp)) >= 0) {
+	// ä»¥ä¸‹ã®ã‚ˆã†ã«æ›¸ã„ã¦ã‚‚OK
+	//  ï¼‘æ–‡å­—ãšã¤èª­ã¿è¾¼ã‚“ã§è¡¨ç¤ºã™ã‚‹
+	while ((ret = fgetc(fp)) >= 0)
+	{
 		printf("%c ", ret);
 	}
 	puts("\n");
@@ -173,29 +217,32 @@ int readfile_fgetc(char* fn) {
 	return 1;
 }
 
-
 /////////////////////////////////////////
-int readfile_fread(char* fn) {
-	FILE* fp;
+int readfile_fread(char *fn)
+{
+	FILE *fp;
 
-	/* ƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“ */
-	if ((fp = fopen(fn, "rb")) == NULL) {
-		printf("ƒtƒ@ƒCƒ‹ŠJ‚­ƒGƒ‰[: %s \n", fn);
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ¼ãƒ—ãƒ³ */
+	if ((fp = fopen(fn, "rb")) == NULL)
+	{
+		printf("ãƒ•ã‚¡ã‚¤ãƒ«é–‹ãã‚¨ãƒ©ãƒ¼: %s \n", fn);
 		return -1;
 	}
 
 	RECORD rTeam;
 	size_t n;
 
-	while (1) {
-		/* sizeof(RECORD)ƒoƒCƒg•ª“Ç‚İ‚İ */
+	while (1)
+	{
+		/* sizeof(RECORD)ãƒã‚¤ãƒˆåˆ†èª­ã¿è¾¼ã¿ */
 		n = fread(&rTeam, sizeof(RECORD), 1, fp);
 
-		printf("–ß‚è’ln : %d\n", (int)n);
+		printf("æˆ»ã‚Šå€¤n : %d\n", (int)n);
 
-		if (n < 1) {
-			/* –ß‚è’l‚ª‘æOˆø”‚æ‚è‚à¬‚³‚¢
-			   ‚Ì‚Åƒtƒ@ƒCƒ‹‚ÌI’[‚És‚«’…‚¢‚½ */
+		if (n < 1)
+		{
+			/* æˆ»ã‚Šå€¤ãŒç¬¬ä¸‰å¼•æ•°ã‚ˆã‚Šã‚‚å°ã•ã„
+			   ã®ã§ãƒ•ã‚¡ã‚¤ãƒ«ã®çµ‚ç«¯ã«è¡Œãç€ã„ãŸ */
 			break;
 		}
 
@@ -210,37 +257,42 @@ int readfile_fread(char* fn) {
 }
 
 /////////////////////////////////////////
-int readfile_fread_all(char* fn) {
-	FILE* fp;
+int readfile_fread_all(char *fn)
+{
+	FILE *fp;
 
-	/* ƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“ */
-	if ((fp = fopen(fn, "rb")) == NULL) {
-		printf("ƒtƒ@ƒCƒ‹ŠJ‚­ƒGƒ‰[: %s \n", fn);
+	/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ¼ãƒ—ãƒ³ */
+	if ((fp = fopen(fn, "rb")) == NULL)
+	{
+		printf("ãƒ•ã‚¡ã‚¤ãƒ«é–‹ãã‚¨ãƒ©ãƒ¼: %s \n", fn);
 		return -1;
 	}
 
 	RECORD allTeam[100];
 	size_t ret_size;
 
-	/* sizeof(RECORD)~TEAMNUM@ƒoƒCƒg•ª“Ç‚İ‚İ */
+	/* sizeof(RECORD)Ã—TEAMNUMã€€ãƒã‚¤ãƒˆåˆ†èª­ã¿è¾¼ã¿ */
 	ret_size = fread(allTeam, sizeof(RECORD), TEAMNUM, fp);
 
-	printf("–ß‚è’l ret_size : %d\n", (int)ret_size);
-	if (ret_size < TEAMNUM) {
+	printf("æˆ»ã‚Šå€¤ ret_size : %d\n", (int)ret_size);
+	if (ret_size < TEAMNUM)
+	{
 		return -1;
 	}
 
-	RECORD* pt;
+	RECORD *pt;
 	pt = allTeam;
-	// ret_size ŒÂ\‘¢‘Ì‚ğƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚ñ‚¾
+	// ret_size å€‹æ§‹é€ ä½“ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚“ã 
 
-	for (int i = 0; i < ret_size; i++) {
-		printf("%s %d %f\n", 
-			allTeam[i].name, allTeam[i].wins, allTeam[i].average);
+	for (int i = 0; i < ret_size; i++)
+	{
+		printf("%s %d %f\n",
+			   allTeam[i].name, allTeam[i].wins, allTeam[i].average);
 	}
-	puts("\n‚à‚¤‚P‰ñ•\¦F");
+	puts("\nã‚‚ã†ï¼‘å›è¡¨ç¤ºï¼š");
 
-	for (int i = 0; i < ret_size; i++) {
+	for (int i = 0; i < ret_size; i++)
+	{
 		printf("name : %s\n", pt->name);
 		printf("wins  :%d\n", pt->wins);
 		printf("average:%f\n\n", pt->average);
@@ -254,8 +306,9 @@ int readfile_fread_all(char* fn) {
 }
 
 ////////////////////////////////////////////
-//ˆÈ~‘‚«‚İ—p\‘¢‘Ì‚Ì¶¬
-void insertTeams() {
+// ä»¥é™æ›¸ãè¾¼ã¿ç”¨æ§‹é€ ä½“ã®ç”Ÿæˆ
+void insertTeams()
+{
 	strcpy(team[0].name, "Bishops");
 	strcpy(team[1].name, "Kings");
 	strcpy(team[2].name, "Jnights");
@@ -276,27 +329,31 @@ void insertTeams() {
 	team[5].losses = 31;
 
 	int i, total;
-	for (i = 0; i < TEAMNUM; i++) {
+	for (i = 0; i < TEAMNUM; i++)
+	{
 		total = team[i].wins + team[i].losses;
-		if (total == 0) {
+		if (total == 0)
+		{
 			team[i].average = 0.0;
 		}
-		else {
+		else
+		{
 			team[i].average = (double)(team[i].wins) / total;
 		}
 	}
 }
 
 /////////////////////////////////////////
-void printTeams() {
-	for (int i = 0; i < TEAMNUM; i++) {
+void printTeams()
+{
+	for (int i = 0; i < TEAMNUM; i++)
+	{
 		printf("%-10s %6d %6d %8.2f \t%p\n",
-			team[i].name,
-			team[i].wins,
-			team[i].losses,
-			team[i].average,
-			&team[i]
-		);
+			   team[i].name,
+			   team[i].wins,
+			   team[i].losses,
+			   team[i].average,
+			   &team[i]);
 	}
 	puts("\n");
 }
